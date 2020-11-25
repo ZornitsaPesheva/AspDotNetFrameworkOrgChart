@@ -80,28 +80,39 @@
         });
 
         $.get("@Url.Action("Read")").done(function (response) {
-            chart.load(response.nodes);
+            setTimeout(function () {
+                chart.load(response.nodes);
+            },2000);
         });
 
         function imageUploadHandler(file, input) {
-        var formData = new FormData();
-        formData.append('file', file);           
+            var formData = new FormData();
+            formData.append('file', file);
 
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("UploadImage")",
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                input.value = data.url;
-            },
-            error: function (error) {
-                alert(error);
-            }
-        });
-    }
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UploadImage")",
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    input.value = data.url;
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        }
+
+            OrgChart.loading.show(chart);
+
+            chart.on('init', function (sender) {
+                OrgChart.loading.hide(sender);
+            });
+
+
+               
 
     </script>
 </body>
